@@ -1,11 +1,11 @@
-Package: ExpoAppRtools
+Package: ExpoApp.Rtools
 Type: Package
 Title: ExpoApp R Tools - Untar, Decrypt, convert to RData, meaning, and simplify
 Version: 0.1.0
 Date: 2020-01-08
 Author: David Donaire-Gonzalez 
 Maintainer: David Donaire-Gonzalez <dedonaire@gmail.com>
-Description: ExpoApp R Tools - Untar, Decrypt, convert to RData, quality analysis, and simplify ExpoApp data.
+Description: ExpoApp R Tools - Untar, Decrypt, Import, quality analysis, and post-process ExpoApp data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
