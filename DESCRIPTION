@@ -1,0 +1,30 @@
+Package: ExpoAppRtools
+Type: Package
+Title: ExpoApp R Tools - Untar, Decrypt, convert to RData, meaning, and simplify
+Version: 0.1.0
+Date: 2020-01-08
+Author: David Donaire-Gonzalez 
+Maintainer: David Donaire-Gonzalez <dedonaire@gmail.com>
+Description: ExpoApp R Tools - Untar, Decrypt, convert to RData, quality analysis, and simplify ExpoApp data.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+URL: https://github.com/daviddonaire/ExpoAppRtools
+BugReports: https://github.com/daviddonaire/ExpoAppRtools/issues
+SystemRequeriments:  
+  java (>= Version 8 Update 231)
+Depends:
+  R (>= 3.1.0)
+Imports:
+  bit64,
+  rmarkdown,
+  knitr,
+  sf,
+  ggplot2,
+  ggspatial,
+  data.table,
+  mapview,
+  RSQLite,
+  cluster,
+  PhysicalActivity
