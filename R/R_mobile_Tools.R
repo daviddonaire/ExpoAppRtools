@@ -12,6 +12,7 @@
 #'
 #'
 #' @import bit64
+#' @import fansi
 #' @import rmarkdown
 #' @import knitr
 #' @import sf
