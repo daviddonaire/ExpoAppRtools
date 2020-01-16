@@ -18,17 +18,17 @@ import_expoapp(
 )
 }
 \arguments{
-\item{file}{The path to the encrypted ExpoApp GPS data is stored.}
+\item{file}{Character variable with the path to the tar.gz file of ExpoApp data.}
 
-\item{SensorLab}{The path to the SensorLab folder with the jar file.}
+\item{SensorLab}{Character variable with the path to the SensorLab folder. SensorLab folder has to contain the jar and the pem files.}
 
-\item{Build}{This the function to clustering. It also enrich data with information about green spaces from OpenStreetMap.}
+\item{Build}{Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.}
 
-\item{EPSG_code}{This is the desired projected coordinate reference system of the study area.}
+\item{EPSG_code}{Numeric variable with the desired projected coordinate reference system of the study area.}
 
-\item{Buffer}{This is the desired minimum buffer used in the clustering algorithm.}
+\item{Buffer}{Numeric variable with the desired minimum raius of the buffer to be used in the clustering algorithm.}
 
-\item{Time.zone}{The time zone of the study area.}
+\item{Time.zone}{Character variable with the time zone of the study area (e.g. "Australia/Melbourne").}
 
 \item{Clustering}{A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.}
 

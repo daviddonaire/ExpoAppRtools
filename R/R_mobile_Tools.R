@@ -472,12 +472,12 @@ table2frame <- function(x,...){
 #' Untar, Decrypt, Save ExpoApp data.
 #' 
 #' This function untars ExpoApp data, decrypts geolocation ExpoApp data, and saves the untared ExpoApp data and the ExpoApp data in RData format.
-#' @param file The path to the encrypted ExpoApp GPS data is stored.
-#' @param SensorLab The path to the SensorLab folder with the jar file.
-#' @param Build This the function to clustering. It also enrich data with information about green spaces from OpenStreetMap.
-#' @param EPSG_code This is the desired projected coordinate reference system of the study area.
-#' @param Buffer This is the desired minimum buffer used in the clustering algorithm.
-#' @param Time.zone The time zone of the study area.
+#' @param file Character variable with the path to the tar.gz file of ExpoApp data.
+#' @param SensorLab Character variable with the path to the SensorLab folder. SensorLab folder has to contain the jar and the pem files.
+#' @param Build Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.
+#' @param EPSG_code Numeric variable with the desired projected coordinate reference system of the study area.
+#' @param Buffer Numeric variable with the desired minimum raius of the buffer to be used in the clustering algorithm.
+#' @param Time.zone Character variable with the time zone of the study area (e.g. "Australia/Melbourne").
 #' @param Clustering A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.
 #' @param save_RData A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.
 #' @param save_untar A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.
