@@ -652,6 +652,9 @@ print_expoapp <- function(result, output_dir = NULL,...){
   cat(sapply(apply(result$notes,1,paste0,collapse=" "),function(x)paste("\n#'",x,"  ")),file=tmp,append=T)
   cat(paste0(expoapp_text3,collapse="\n"),file=tmp,append=T)
 
+  if(rmarkdown::pandoc_available()==FALSE){
+    install.pandoc()
+  }
   rmarkdown::render(tmp,output_dir = output_dir)
   unlink(tmp)
   browseURL(file.path(output_dir,"expoapp_summary.html"))
