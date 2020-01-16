@@ -1,5 +1,5 @@
 
-#' Decrypt Geolocation of ExpoApp
+#' Decrypt a Geolocation ExpoApp File
 #'
 #' It is a function to decode the geolocation file of ExpoApp.
 #'
@@ -36,11 +36,11 @@
 #' browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' gps_file <- system.file("extdata", "ExpoApp.GPS.IDddg.csv", package = "ExpoAppRtools")
-#' decrypt(file = gps_file, SensorLab = Lab_folder)
+#' decrypt_expoapp(file = gps_file, SensorLab = Lab_folder)
 #'
 #' @export
 
-decrypt <- function(file=NULL, output_dir=NULL,SensorLab=SensorLab,...){
+decrypt_expoapp <- function(file=NULL, output_dir=NULL,SensorLab=SensorLab,...){
   if(is.null(output_dir)){
     output_dir <- file.path(sub("/([^/]*)$", "",file),"decrypted")
   }
@@ -83,12 +83,12 @@ decrypt <- function(file=NULL, output_dir=NULL,SensorLab=SensorLab,...){
 #' @return value
 #' @export
 
-decrypt.list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){
+decrypt_expoapp_list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){
 
   if(is.null(output_dir)){
     output_dir <- sub("/([^/]*)$", "",gps_dir)
   }
-  res <-lapply(list.files(gps_dir,full.names = TRUE),function(y)decrypt(y,output_dir=raw,SensorLab))
+  res <-lapply(list.files(gps_dir,full.names = TRUE),function(y)decrypt_expoapp(y,output_dir=raw,SensorLab))
   ifelse(is.list(res),paste("Decrypted files saved in ",file.path(paste(head(strsplit(raw,"/")[[1]],-1),collapse="/"),"decrypted")),"ERROR")
 }
 
@@ -108,14 +108,14 @@ decrypt.list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' gps_file <- file.path(Lab_folder,"ExpoApp.GPS.IDddg_decrypted.csv")
 #'
-#' gps_data <- read.gps.expoapp(file = gps_file)
+#' gps_data <- read_gps_expoapp(file = gps_file)
 #' head(gps_data)
 #' gps_sf <- sf::st_as_sf(gps_data,coords=c("LONGITUDE","LATITUDE"),crs=4326)
 #' mapview::mapview(gps_sf)
 #'
 #' @export
 
-read.gps.expoapp <- function(file=NULL,...){
+read_gps_expoapp <- function(file=NULL,...){
   EPO <- NULL
 
   gps <- fread(file,sep=",",skip=1)[,1:7]
@@ -219,7 +219,7 @@ mobile.gps.list <- function(processed=NULL,...){
 }
 
 
-#' Convert accelerometry to forces
+#' Convert Accelerometry to Forces
 #'
 #' It is the function to convert the x,y,z axes accelerometry measures to 2 vector forces (Vertical & Horizontal).
 #' @param x An data.table object with the accelerometer data from the ExpoApp data.It is generated using import_expoapp function.
@@ -306,7 +306,8 @@ axes2vectors<-function(x=NULL,path,lista=TRUE,Time.zone="Australia/Melbourne",..
   return(result)
 }
 
-#' pa.acti2 is the function to convert forces to ActiGraph counts, METs and wearing time.
+#' Convert Forces to ActiGraph Counts, METs and Estimates Wearing Time.
+#' 
 #' @param ace A data.table with the accelerometer data from ExpoApp.
 #' @param x The path, including file name, where we want to save the time-series of METs
 #' @param plot A logical variable (TRUE/FALSE) indicating png plot with the time-series of METs.
@@ -422,21 +423,21 @@ pa.acti2 <-function(ace,x,plot=FALSE,population="adults",...){
 }
 
 
-#' expoapp_completness
+#' Evaluation of Data Completeness of an ExpoApp session.
 #'
-#' It is the function to assess the number of minutes without location or turn off during monitoring.
+#' It is the function to assess the number of minutes with accelerometer but no location. The off printed identify when the smartphone was turn off.
 #' @param aux The data.table with ExpoApp information at minute resolution.
 #' @param ... optional arguments of table function.
 #'
 #' @return value
 #' @export
 
-expoapp_completness <- function(aux,...){
-  completness <- Mets <- pro <- NULL
+completeness_expoapp <- function(aux,...){
+  completeness <- Mets <- pro <- NULL
 
-  aux[,completness := ifelse(is.na(Mets) & is.na(pro), -1,
+  aux[,completeness := ifelse(is.na(Mets) & is.na(pro), -1,
                              ifelse(is.na(pro) & !is.na(Mets),1,NA))]
-  res <- aux[,ifelse(sum(completness,na.rm=T)<= -59,"off",as.character(round(sum(completness[completness>0],na.rm=T),0))),by=c('day','hour')]
+  res <- aux[,ifelse(sum(completeness,na.rm=T)<= -59,"off",as.character(round(sum(completeness[completeness>0],na.rm=T),0))),by=c('day','hour')]
   res.width <- dcast(res, day ~ hour, value.var="V1")
   res.width[is.na(res.width)] <- '-'
   return(res.width)
@@ -469,14 +470,14 @@ table2frame <- function(x,...){
 }
 
 
-#' Untar, Decrypt, Save ExpoApp data.
+#' Untar, Decrypt and Save ExpoApp data.
 #' 
-#' This function untars ExpoApp data, decrypts geolocation ExpoApp data, and saves the untared ExpoApp data and the ExpoApp data in RData format.
+#' This function untars ExpoApp data, decrypts ExpoApp geolocation file, and saves the ExpoApp untared and in RData format.
 #' @param file Character variable with the path to the tar.gz file of ExpoApp data.
 #' @param SensorLab Character variable with the path to the SensorLab folder. SensorLab folder has to contain the jar and the pem files.
 #' @param Build Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.
 #' @param EPSG_code Numeric variable with the desired projected coordinate reference system of the study area.
-#' @param Buffer Numeric variable with the desired minimum raius of the buffer to be used in the clustering algorithm.
+#' @param Buffer Numeric variable with the desired minimum radius of the buffer to be used in the clustering algorithm.
 #' @param Time.zone Character variable with the time zone of the study area (e.g. "Australia/Melbourne").
 #' @param Clustering A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.
 #' @param save_RData A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.
@@ -539,14 +540,14 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
   }else {acce <- NULL}
 
   ## READING & CLEANNING SPATIAL DATA
-  a <- decrypt(dir2_expoapp$gps,SensorLab=SensorLab)
+  a <- decrypt_expoapp(dir2_expoapp$gps,SensorLab=SensorLab)
   
   if(Clustering==TRUE){
     gis.expo(Build=Build,Decrypted=a,EPSG_code=EPSG_code ,Buffer=Buffer ,Time.zone=Time.zone)
     getwd()
     gps <- mobile.gps(list.files(gsub("decrypted","processed",a),full.names=T))
   }else{
-    gps <- read.gps.expoapp(file=list.files(a))
+    gps <- read_gps_expoapp(file=list.files(a))
   }
 
   ## READING BAROMETRIC DATA
@@ -599,7 +600,7 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
 }
 
 
-#' expoapp_print
+#' print_expoapp
 #' 
 #' It is the function to generate the html with the data analysis of the ExpoApp data.
 #' @param result It is a list object with the times, settings, notes, gps_plot, pa_plot, and nolocation.
@@ -615,7 +616,7 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
 #' @return value
 #' @export
 
-expoapp_print <- function(result, output_dir = NULL,...){
+print_expoapp <- function(result, output_dir = NULL,...){
   expoapp_text1 <- c("#' ---","#' title: ExpoApp Quality Data Analysis","#' author: David Donaire-Gonzalez","#' date: January 8th, 2019",
                      "#' output:","#'    html_document:","#'      toc: true","#'      highlight: zenburn","#' ---"," ","#' ## Phone & ExpoApp Settings","#'",
                      " ",'#+ results="asis",echo=FALSE, size="tiny" ')
@@ -643,7 +644,7 @@ expoapp_print <- function(result, output_dir = NULL,...){
 }
 
 
-#' Expo_resum
+#' Generate ExpoApp_Totals, ExpoApp_min ,and Quality Analysis Report
 #'
 #' It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
 #' @param ExpoApp It is the ExpoApp RData object
@@ -657,18 +658,18 @@ expoapp_print <- function(result, output_dir = NULL,...){
 #' @examples
 #' # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants in case they lose the pheno.
 #' # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-#' # It contains a decrypt keep and example datasets.
+#' # It contains a decrypt key and example datasets.
 #' # Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 #'
 #' browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 #' ls()
-#' result <- Expo_resum(ExpoApp=expoapp,output_dir=getwd())
+#' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd())
 #' sapply(result,class)
 #' @export
 
-Expo_resum <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Australia/Melbourne",
+reduce_expoapp <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Australia/Melbourne",
                        output_dir = getwd(),...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
 
@@ -721,7 +722,7 @@ Expo_resum <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Australi
     NET_Location = table2frame(round(table(aux_min$day[aux_min$pro%in%'network'])/60,1))
   ),idcol = "Type", fill=TRUE)
 
-  nolocation <- expoapp_completness(aux_min)
+  nolocation <- completeness_expoapp(aux_min)
 
   pa_plot <- ggplot(aux_min,aes(time,Mets))+xlim(c(0,24))+geom_path()+facet_wrap(~day)+ theme_bw()
 
@@ -741,7 +742,7 @@ Expo_resum <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Australi
     gps_plot = gps_plot,
     notes = copy(ExpoApp$notes))
 
-  expoapp_print(result,output_dir = output_dir)
+  print_expoapp(result,output_dir = output_dir)
 
   return(result)
 }

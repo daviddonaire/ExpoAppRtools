@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{import_expoapp}
 \alias{import_expoapp}
-\title{Untar, Decrypt, Save ExpoApp data.}
+\title{Untar, Decrypt and Save ExpoApp data.}
 \usage{
 import_expoapp(
   file = NULL,
@@ -26,7 +26,7 @@ import_expoapp(
 
 \item{EPSG_code}{Numeric variable with the desired projected coordinate reference system of the study area.}
 
-\item{Buffer}{Numeric variable with the desired minimum raius of the buffer to be used in the clustering algorithm.}
+\item{Buffer}{Numeric variable with the desired minimum radius of the buffer to be used in the clustering algorithm.}
 
 \item{Time.zone}{Character variable with the time zone of the study area (e.g. "Australia/Melbourne").}
 
@@ -42,7 +42,7 @@ import_expoapp(
 value
 }
 \description{
-This function untars ExpoApp data, decrypts geolocation ExpoApp data, and saves the untared ExpoApp data and the ExpoApp data in RData format.
+This function untars ExpoApp data, decrypts ExpoApp geolocation file, and saves the ExpoApp untared and in RData format.
 }
 \examples{
 # Using your password and the below link, you can download SensorLab2-1.2.2 tool.

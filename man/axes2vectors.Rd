@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{axes2vectors}
 \alias{axes2vectors}
-\title{Convert accelerometry to forces}
+\title{Convert Accelerometry to Forces}
 \usage{
 axes2vectors(
   x = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{pa.acti2}
 \alias{pa.acti2}
-\title{pa.acti2 is the function to convert forces to ActiGraph counts, METs and wearing time.}
+\title{Convert Forces to ActiGraph Counts, METs and Estimates Wearing Time.}
 \usage{
 pa.acti2(ace, x, plot = FALSE, population = "adults", ...)
 }
@@ -21,5 +21,5 @@ pa.acti2(ace, x, plot = FALSE, population = "adults", ...)
 value
 }
 \description{
-pa.acti2 is the function to convert forces to ActiGraph counts, METs and wearing time.
+Convert Forces to ActiGraph Counts, METs and Estimates Wearing Time.
 }
