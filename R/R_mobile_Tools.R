@@ -539,7 +539,7 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
     setkey(acce, EPO)
   }else {acce <- NULL}
 
-  ## READING & CLEANNING SPATIAL DATA
+  ## READING & CLEANNING SPATIAL DATA.
   a <- decrypt_expoapp(dir2_expoapp$gps,SensorLab=SensorLab)
   
   if(Clustering==TRUE){
