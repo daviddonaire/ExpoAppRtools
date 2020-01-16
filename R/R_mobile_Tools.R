@@ -469,7 +469,9 @@ table2frame <- function(x,...){
 }
 
 
-#' import_expoapp is the function to untar, decrypt, save and convert to RData ExpoApp data.
+#' Untar, Decrypt, Save ExpoApp data.
+#' 
+#' This function untars ExpoApp data, decrypts geolocation ExpoApp data, and saves the untared ExpoApp data and the ExpoApp data in RData format.
 #' @param file The path to the encrypted ExpoApp GPS data is stored.
 #' @param SensorLab The path to the SensorLab folder with the jar file.
 #' @param Build This the function to clustering. It also enrich data with information about green spaces from OpenStreetMap.

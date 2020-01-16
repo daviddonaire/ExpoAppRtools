@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{import_expoapp}
 \alias{import_expoapp}
-\title{import_expoapp is the function to untar, decrypt, save and convert to RData ExpoApp data.}
+\title{Untar, Decrypt, Save ExpoApp data.}
 \usage{
 import_expoapp(
   file = NULL,
@@ -42,7 +42,7 @@ import_expoapp(
 value
 }
 \description{
-import_expoapp is the function to untar, decrypt, save and convert to RData ExpoApp data.
+This function untars ExpoApp data, decrypts geolocation ExpoApp data, and saves the untared ExpoApp data and the ExpoApp data in RData format.
 }
 \examples{
 # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
