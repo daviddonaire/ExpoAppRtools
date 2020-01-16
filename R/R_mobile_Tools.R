@@ -683,7 +683,7 @@ print_expoapp <- function(result, output_dir = NULL,...){
 #' sapply(result,class)
 #' @export
 
-reduce_expoapp <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Australia/Melbourne",
+reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
                        output_dir = getwd(),...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
 
@@ -699,7 +699,7 @@ reduce_expoapp <- function(ExpoApp = NULL ,acce_lista = FALSE, Time.zone = "Aust
   gps_min <- gps_min[gps_min[ , .I[which.min(acc)], by = date.min]$V1]
 
   acce <- copy(ExpoApp$acce)
-  acce <- axes2vectors(x=acce,lista=acce_lista,Time.zone=Time.zone)
+  acce <- axes2vectors(x=acce,lista=FALSE,Time.zone=Time.zone)
   acce.date <- data.table(Date=seq(min(acce$Date),max(acce$Date),by="10 secs"))
   acce <- merge(acce.date,acce,by="Date",all.x=T)
   acce[,axis1 := ifelse(V<0.27,0,-48.08 + 211.81*(V^0.95))]

@@ -6,7 +6,6 @@
 \usage{
 reduce_expoapp(
   ExpoApp = NULL,
-  acce_lista = FALSE,
   Time.zone = "Australia/Melbourne",
   output_dir = getwd(),
   ...
@@ -15,13 +14,13 @@ reduce_expoapp(
 \arguments{
 \item{ExpoApp}{It is the ExpoApp RData object}
 
-\item{acce_lista}{A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.}
-
 \item{Time.zone}{The time zone of the study area.}
 
 \item{output_dir}{The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp data.}
 
 \item{...}{optional arguments of function.}
+
+\item{acce_lista}{A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.}
 }
 \value{
 value
