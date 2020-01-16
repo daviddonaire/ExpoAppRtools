@@ -547,7 +547,7 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
     getwd()
     gps <- mobile.gps(list.files(gsub("decrypted","processed",a),full.names=T))
   }else{
-    gps <- read_gps_expoapp(file=list.files(a))
+    gps <- read_gps_expoapp(file=list.files(a,full.names = TRUE))
   }
 
   ## READING BAROMETRIC DATA
