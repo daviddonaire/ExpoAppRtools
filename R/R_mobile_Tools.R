@@ -14,6 +14,7 @@
 #' @import bit64
 #' @import fansi
 #' @import rmarkdown
+#' @import installr
 #' @import knitr
 #' @import sf
 #' @import ggplot2
@@ -653,7 +654,7 @@ print_expoapp <- function(result, output_dir = NULL,...){
   cat(paste0(expoapp_text3,collapse="\n"),file=tmp,append=T)
 
   if(rmarkdown::pandoc_available()==FALSE){
-    install.pandoc()
+    installr::install.pandoc("https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi")
   }
   rmarkdown::render(tmp,output_dir = output_dir)
   unlink(tmp)
