@@ -12,8 +12,8 @@ import_expoapp(
   Buffer = 150,
   Time.zone = "Europe/Rome",
   Clustering = FALSE,
-  output = "all",
-  save_untar = FALSE,
+  save_RData = TRUE,
+  save_untar = TRUE,
   ...
 )
 }
@@ -32,15 +32,11 @@ import_expoapp(
 
 \item{Clustering}{A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.}
 
-\item{output}{A character variable with values ("all","save","load"). "all" generates an RData and returns a list of data.tables. "save" generates a RData file. "load" returns a list of data.tables.}
+\item{save_RData}{A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.}
 
 \item{save_untar}{A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.}
 
 \item{...}{optional arguments to FUN.}
-
-\item{acelerometro}{A logical variable (TRUE/FALSE) indicating if applying yes/no the axes2vector algorithm.}
-
-\item{acce_lista}{A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.}
 }
 \value{
 value
@@ -58,8 +54,8 @@ Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 targz_file <- file.path(Lab_folder,"ExpoApp.IDddg.tar.gz")
 
 expoapp <- import_expoapp(file = targz_file, SensorLab = Lab_folder,
-                        Time.zone = "Australia/Melbourne", acelerometro = TRUE,
-                        Clustering = FALSE, output = "all")
+                        Time.zone = "Australia/Melbourne", 
+                        Clustering = FALSE, save_RData = FALSE, save_untar=FALSE)
 sapply(expoapp,head)
 
 gps_sf <- sf::st_as_sf(expoapp$gps,coords=c("LONGITUDE","LATITUDE"),crs=4326)

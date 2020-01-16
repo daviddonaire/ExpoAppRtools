@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{decrypt.list}
 \alias{decrypt.list}
-\title{Decrypt a List of Geolocation Files of ExpoApp}
+\title{Decrypt a Geolocation ExpoApp Files List}
 \usage{
 decrypt.list(gps_dir = NULL, output_dir = NULL, SensorLab = NULL, ...)
 }

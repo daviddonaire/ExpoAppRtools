@@ -2,7 +2,7 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{read.gps.expoapp}
 \alias{read.gps.expoapp}
-\title{Read.gps.expoapp}
+\title{Read a Decrypted Geolocation ExpoApp File}
 \usage{
 read.gps.expoapp(file = NULL, ...)
 }
@@ -26,7 +26,7 @@ browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 gps_file <- file.path(Lab_folder,"ExpoApp.GPS.IDddg_decrypted.csv")
 
-gps_data <- read.gps.expoapp(file = gps_file, SensorLab = Lab_folder)
+gps_data <- read.gps.expoapp(file = gps_file)
 head(gps_data)
 gps_sf <- sf::st_as_sf(gps_data,coords=c("LONGITUDE","LATITUDE"),crs=4326)
 mapview::mapview(gps_sf)
