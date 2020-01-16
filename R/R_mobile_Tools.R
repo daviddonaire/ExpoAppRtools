@@ -477,9 +477,7 @@ table2frame <- function(x,...){
 #' @param Buffer This is the desired minimum buffer used in the clustering algorithm.
 #' @param Time.zone The time zone of the study area.
 #' @param Clustering A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.
-#' @param acelerometro A logical variable (TRUE/FALSE) indicating if applying yes/no the axes2vector algorithm.
-#' @param acce_lista A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.
-#' @param output A character variable with values ("all","save","load"). "all" generates an RData and returns a list of data.tables. "save" generates a RData file. "load" returns a list of data.tables.
+#' @param save_RData A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.
 #' @param save_untar A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.
 #' @param ... optional arguments to FUN.
 #'
@@ -495,8 +493,8 @@ table2frame <- function(x,...){
 #' targz_file <- file.path(Lab_folder,"ExpoApp.IDddg.tar.gz")
 #'
 #' expoapp <- import_expoapp(file = targz_file, SensorLab = Lab_folder,
-#'                         Time.zone = "Australia/Melbourne", acelerometro = TRUE,
-#'                         Clustering = FALSE, output = "all")
+#'                         Time.zone = "Australia/Melbourne", 
+#'                         Clustering = FALSE, save_RData = FALSE, save_untar=FALSE)
 #' sapply(expoapp,head)
 #'
 #' gps_sf <- sf::st_as_sf(expoapp$gps,coords=c("LONGITUDE","LATITUDE"),crs=4326)
@@ -504,10 +502,10 @@ table2frame <- function(x,...){
 #' # see Expoapp_resum to generate the 10 seconds and 1 minute simplified Expoapp files.
 #' @export
 
-import_expoapp <- function(file=NULL,SensorLab=NULL,
-                         Build=NULL,
-                         EPSG_code=25832 ,Buffer=150 ,Time.zone="Europe/Rome",Clustering=FALSE,
-                         output="all",save_untar=FALSE,...){
+import_expoapp <- function(file = NULL, SensorLab = NULL,
+                         Build = NULL, EPSG_code = 25832, Buffer = 150,
+                         Time.zone = "Europe/Rome", Clustering = FALSE,
+                         save_RData= TRUE, save_untar = TRUE,...){
   EPO <- V1 <- NULL
 
   inicio <- getwd()
@@ -587,19 +585,14 @@ import_expoapp <- function(file=NULL,SensorLab=NULL,
 
   setwd(inicio)
 
-  ## RETURNING RESULTS
-  if(output=="all"){
-    save(expoapp,file=gsub(".tar.gz",".RData",file))
-    print(paste("RData file of ExpoApp saved at",gsub(".tar.gz",".RData",file)))
-    return(expoapp)
-  }
-  if(output=="save"){
+  ## SAVE RDATA
+  if(save_RData=="TRUE"){
     save(expoapp,file=gsub(".tar.gz",".RData",file))
     print(paste("RData file of ExpoApp saved at",gsub(".tar.gz",".RData",file)))
   }
-  if(output=="load"){
-    return(expoapp)
-  }
+  
+  ## RETURNING RESULTS  
+  return(expoapp)
   
 }
 
