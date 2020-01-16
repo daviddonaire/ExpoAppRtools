@@ -13,7 +13,8 @@ RoxygenNote: 7.0.2
 URL: https://github.com/daviddonaire/RExpoApp
 BugReports: https://github.com/daviddonaire/RExpoApp/issues
 SystemRequeriments:  
-  java (>= Version 8 Update 231)
+  java (>= Version 8 Update 231),
+  pandoc (2.7.2)
 Depends:
   R (>= 3.1.0)
 Imports:
