@@ -72,7 +72,7 @@ decrypt <- function(file=NULL, output_dir=NULL,SensorLab=SensorLab,...){
 }
 
 
-#' Decrypt a List of Geolocation Files of ExpoApp
+#' Decrypt a Geolocation ExpoApp Files List
 #'
 #' It is a function to decrypt at once all ExpoApp gps files stored into the same folder.
 #' @param gps_dir The path where the encrypted ExpoApp GPS files are stored.
@@ -92,7 +92,7 @@ decrypt.list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){
   ifelse(is.list(res),paste("Decrypted files saved in ",file.path(paste(head(strsplit(raw,"/")[[1]],-1),collapse="/"),"decrypted")),"ERROR")
 }
 
-#' Read.gps.expoapp
+#' Read a Decrypted Geolocation ExpoApp File
 #'
 #' It is a function to read gps data from ExpoApp.
 #' @param file It is a string variable with the path to the decripted ExpoApp GPS data.
@@ -108,7 +108,7 @@ decrypt.list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' gps_file <- file.path(Lab_folder,"ExpoApp.GPS.IDddg_decrypted.csv")
 #'
-#' gps_data <- read.gps.expoapp(file = gps_file, SensorLab = Lab_folder)
+#' gps_data <- read.gps.expoapp(file = gps_file)
 #' head(gps_data)
 #' gps_sf <- sf::st_as_sf(gps_data,coords=c("LONGITUDE","LATITUDE"),crs=4326)
 #' mapview::mapview(gps_sf)
