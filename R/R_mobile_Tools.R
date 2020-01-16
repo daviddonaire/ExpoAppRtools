@@ -510,7 +510,21 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
                          Time.zone = "Europe/Rome", Clustering = FALSE,
                          save_RData= TRUE, save_untar = TRUE,...){
   EPO <- V1 <- NULL
-
+  
+  Clustering = FALSE
+  
+  if(is.null(file)){
+    stop("Error: file is not a Character variable with the path to the tar.gz file of ExpoApp data.")
+  }
+  
+  if(is.null(SensorLab)){
+    stop("Error: SensorLab is not a Character variable with the path to the SensorLab folder.")
+    
+  }
+  if(all(c("priv8.pem","SensorLab2-1.2.2-jar-with-dependencies.jar")%in%list.files(SensorLab))==FALSE){
+    stop("Error: SensorLab doesn't contain the jar and the pem files.")
+  }
+  
   inicio <- getwd()
 
   if(save_untar==FALSE){
