@@ -13,7 +13,7 @@ axes2vectors(
 )
 }
 \arguments{
-\item{x}{An data.table object with the accelerometer data from the ExpoApp data.It is generated using read.expoapp function.}
+\item{x}{An data.table object with the accelerometer data from the ExpoApp data.It is generated using import_expoapp function.}
 
 \item{path}{It is the path directory to the accelerometer folder of ExpoApp data.}
 

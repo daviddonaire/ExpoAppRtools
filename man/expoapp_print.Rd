@@ -2,13 +2,9 @@
 % Please edit documentation in R/R_mobile_Tools.R
 \name{expoapp_print}
 \alias{expoapp_print}
-\title{expoapp_print is the function to generate the html with the data analysis of the ExpoApp data.}
+\title{expoapp_print}
 \usage{
-expoapp_print(
-  result,
-  output_dir = "C:/Users/dagonzalez/Desktop/iMAP_DATA/IDMEL056",
-  ...
-)
+expoapp_print(result, output_dir = NULL, ...)
 }
 \arguments{
 \item{result}{It is a list object with the times, settings, notes, gps_plot, pa_plot, and nolocation.
@@ -27,5 +23,5 @@ Nolocation is the temporal completeness of the geolocation of the Expoapp sessio
 value
 }
 \description{
-expoapp_print is the function to generate the html with the data analysis of the ExpoApp data.
+It is the function to generate the html with the data analysis of the ExpoApp data.
 }

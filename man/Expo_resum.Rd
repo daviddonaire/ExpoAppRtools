@@ -30,9 +30,10 @@ value
 It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
 }
 \examples{
+# ExpoApp geolocation information is encrypted to ensure the confidentiality of participants in case they lose the pheno.
 # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-# It contains a jar file and an example dataset.
-# Please, unzip and save it into your desired path.
+# It contains a decrypt keep and example datasets.
+# Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 
 browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"

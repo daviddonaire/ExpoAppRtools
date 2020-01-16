@@ -436,7 +436,7 @@ expoapp_completness <- function(aux,...){
 
   aux[,completness := ifelse(is.na(Mets) & is.na(pro), -1,
                              ifelse(is.na(pro) & !is.na(Mets),1,NA))]
-  res <- aux[,ifelse(sum(completness,na.rm=T)>=0,as.character(round(sum(completness[completness>0],na.rm=T),0)),"off"),by=c('day','hour')]
+  res <- aux[,ifelse(sum(completness,na.rm=T)<= -59,"off",as.character(round(sum(completness[completness>0],na.rm=T),0))),by=c('day','hour')]
   res.width <- dcast(res, day ~ hour, value.var="V1")
   res.width[is.na(res.width)] <- '-'
   return(res.width)
@@ -507,12 +507,12 @@ table2frame <- function(x,...){
 import_expoapp <- function(file=NULL,SensorLab=NULL,
                          Build=NULL,
                          EPSG_code=25832 ,Buffer=150 ,Time.zone="Europe/Rome",Clustering=FALSE,
-                         output="all",save_untar='yes',...){
+                         output="all",save_untar=FALSE,...){
   EPO <- V1 <- NULL
 
   inicio <- getwd()
 
-  if(save_untar=='no'){
+  if(save_untar==FALSE){
     td <- tempdir()
   }else{
     td <- sub("/([^/]*)$", "",file)
@@ -569,13 +569,15 @@ import_expoapp <- function(file=NULL,SensorLab=NULL,
   notes <- notes[V1%in%c('Mon','Tue','Wed','Thu','Fri','Sat','Sun'),]
   notes <- unique(notes)
 
-  ## REMOVING TEMPORAL FILES
-  if(save_untar=='no'){
+  ## REMOVING OR SAVING UNTARED FILES
+  if(save_untar==FALSE){
     unlink(file.path(td,dir_expoapp[1]),recursive=T)
   }else{
     print(paste("Untared file of ExpoApp saved at",file.path(td,dir_expoapp[1])))
   }
-  ## GENERATING RESULTS
+  
+  
+  ## GENERATING EXPOAPP OBJECT
   expoapp <- list(acce=acce,
                   gps=gps,
                   bar=bar,
@@ -598,6 +600,7 @@ import_expoapp <- function(file=NULL,SensorLab=NULL,
   if(output=="load"){
     return(expoapp)
   }
+  
 }
 
 
@@ -617,14 +620,14 @@ import_expoapp <- function(file=NULL,SensorLab=NULL,
 #' @return value
 #' @export
 
-expoapp_print <- function(result, output_dir = "C:/Users/dagonzalez/Desktop/iMAP_DATA/IDMEL056",...){
+expoapp_print <- function(result, output_dir = NULL,...){
   expoapp_text1 <- c("#' ---","#' title: ExpoApp Quality Data Analysis","#' author: David Donaire-Gonzalez","#' date: January 8th, 2019",
                      "#' output:","#'    html_document:","#'      toc: true","#'      highlight: zenburn","#' ---"," ","#' ## Phone & ExpoApp Settings","#'",
                      " ",'#+ results="asis",echo=FALSE, size="tiny" ')
-  expoapp_text2 <- c("\n#'"," ","#' ## Times: Recorded, Wearing the monitor, with location, GPS location and NETWORK location",
+  expoapp_text2 <- c("\n#'"," ","#' ## Evaluation of Data Completeness:","#' Recorded, Wearing, and with All, GPS and NETWORK location",
                      "#'"," ",'#+ results="asis",echo=FALSE, size="tiny" ',"knitr::kable(result$times)","#'"," ","#' ## ExpoApp Physical Activity Plot",
-                     "#'"," ","#+ fig.width=9, fig.height=6, echo=FALSE ","result$pa_plot ","#'"," ","#' ## ExpoApp Map ","#'"," ","#+ fig.width=9, fig.height=6, echo=FALSE ",
-                     "result$gps_plot@map ","#'"," ","#' ## Hours without location & turn off ","#'"," ","#+ results='asis',echo=FALSE ","knitr::kable(result$nolocation) ",
+                     "#'"," ","#+ fig.width=9, fig.height=4,echo=FALSE ","result$pa_plot ","#'"," ","#' ## ExpoApp Map ","#'"," ","#+ fig.width=9, fig.height=6, echo=FALSE ",
+                     "result$gps_plot@map ","#'"," ","#' ## Minutes with accelerometer but no location","#' (off: smartphone turn off) ","#'"," ","#+ results='asis',echo=FALSE ","knitr::kable(result$nolocation) ",
                      "#'"," "," ","#' ## ExpoApp logcat ","#'"," ","#+ results='asis',echo=FALSE ")
   expoapp_text3 <- c("\n#'"," ","#+ echo=FALSE ","#https://rmarkdown.rstudio.com/articles_report_from_r_script.html ",
                      "#http://brooksandrew.github.io/simpleblog/articles/render-reports-directly-from-R-scripts/ ",
