@@ -222,7 +222,7 @@ mobile.gps.list <- function(processed=NULL,...){
 #' Convert accelerometry to forces
 #'
 #' It is the function to convert the x,y,z axes accelerometry measures to 2 vector forces (Vertical & Horizontal).
-#' @param x An data.table object with the accelerometer data from the ExpoApp data.It is generated using read.expoapp function.
+#' @param x An data.table object with the accelerometer data from the ExpoApp data.It is generated using import_expoapp function.
 #' @param path It is the path directory to the accelerometer folder of ExpoApp data.
 #' @param lista Logical variable (TRUE,FALSE). If it is TRUE the function returns two elements the raw data and the 10 second forces dataset. If it false return only the 10 second resolution dataset with forces.
 #' @param Time.zone Character variable with the time zone information.
@@ -469,7 +469,7 @@ table2frame <- function(x,...){
 }
 
 
-#' read.expoapp is the function to untar, decrypt, save and convert to RData ExpoApp data.
+#' import_expoapp is the function to untar, decrypt, save and convert to RData ExpoApp data.
 #' @param file The path to the encrypted ExpoApp GPS data is stored.
 #' @param SensorLab The path to the SensorLab folder with the jar file.
 #' @param Build This the function to clustering. It also enrich data with information about green spaces from OpenStreetMap.
@@ -480,7 +480,7 @@ table2frame <- function(x,...){
 #' @param acelerometro A logical variable (TRUE/FALSE) indicating if applying yes/no the axes2vector algorithm.
 #' @param acce_lista A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.
 #' @param output A character variable with values ("all","save","load"). "all" generates an RData and returns a list of data.tables. "save" generates a RData file. "load" returns a list of data.tables.
-#' @param keep_untar A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.
+#' @param save_untar A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.
 #' @param ... optional arguments to FUN.
 #'
 #' @return value
@@ -494,7 +494,7 @@ table2frame <- function(x,...){
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' targz_file <- file.path(Lab_folder,"ExpoApp.IDddg.tar.gz")
 #'
-#' expoapp <- read.expoapp(file = targz_file, SensorLab = Lab_folder,
+#' expoapp <- import_expoapp(file = targz_file, SensorLab = Lab_folder,
 #'                         Time.zone = "Australia/Melbourne", acelerometro = TRUE,
 #'                         Clustering = FALSE, output = "all")
 #' sapply(expoapp,head)
@@ -504,15 +504,15 @@ table2frame <- function(x,...){
 #' # see Expoapp_resum to generate the 10 seconds and 1 minute simplified Expoapp files.
 #' @export
 
-read.expoapp <- function(file=NULL,SensorLab="D:/DAVID/EXPOsOMICS/APP/SensorLab2-1.1.8",
-                         Build="D:/DAVID/EXPOsOMICS/algorithm_mobile/Antonia_algorithm/build",
-                         EPSG_code=25832 ,Buffer=150 ,Time.zone="Europe/Rome",Clustering=TRUE,
-                         acelerometro=TRUE,acce_lista=FALSE,output="all",keep_untar='yes',...){
+import_expoapp <- function(file=NULL,SensorLab=NULL,
+                         Build=NULL,
+                         EPSG_code=25832 ,Buffer=150 ,Time.zone="Europe/Rome",Clustering=FALSE,
+                         output="all",save_untar='yes',...){
   EPO <- V1 <- NULL
 
   inicio <- getwd()
 
-  if(keep_untar=='no'){
+  if(save_untar=='no'){
     td <- tempdir()
   }else{
     td <- sub("/([^/]*)$", "",file)
@@ -533,28 +533,26 @@ read.expoapp <- function(file=NULL,SensorLab="D:/DAVID/EXPOsOMICS/APP/SensorLab2
                        logcat = file.path(td,grep("logcat",dir_expoapp,value=T)))
 
   ## READING ACCELEROMETRY
-  if(acelerometro==TRUE){
-    #	acce <- axes2vectors(path=dir2_expoapp$acce,lista=acce_lista,Time.zone=Time.zone)
+  if(length(dir2_expoapp$acce!=0)){
     acce <- rbindlist(lapply(dir2_expoapp$acce,fread), use.names = TRUE)
     setkey(acce, EPO)
-  }else{
-    acce <- data.frame(EPO=NA,X=NA,Y=NA,Z=NA) }
+  }else {acce <- NULL}
 
   ## READING & CLEANNING SPATIAL DATA
   a <- decrypt(dir2_expoapp$gps,SensorLab=SensorLab)
-  setwd(a)
+  
   if(Clustering==TRUE){
     gis.expo(Build=Build,Decrypted=a,EPSG_code=EPSG_code ,Buffer=Buffer ,Time.zone=Time.zone)
     getwd()
     gps <- mobile.gps(list.files(gsub("decrypted","processed",a),full.names=T))
   }else{
-    gps <- read.gps.expoapp(file=list.files())
+    gps <- read.gps.expoapp(file=list.files(a))
   }
 
   ## READING BAROMETRIC DATA
   if(length(dir2_expoapp$bar!=0)){
     bar <- read.csv(dir2_expoapp$bar)
-  }else {bar<- NULL}
+  }else {bar <- NULL}
 
   ## READING UI DATA
   if(length(dir2_expoapp$ui!=0)){
@@ -572,7 +570,7 @@ read.expoapp <- function(file=NULL,SensorLab="D:/DAVID/EXPOsOMICS/APP/SensorLab2
   notes <- unique(notes)
 
   ## REMOVING TEMPORAL FILES
-  if(keep_untar=='no'){
+  if(save_untar=='no'){
     unlink(file.path(td,dir_expoapp[1]),recursive=T)
   }else{
     print(paste("Untared file of ExpoApp saved at",file.path(td,dir_expoapp[1])))
@@ -600,11 +598,12 @@ read.expoapp <- function(file=NULL,SensorLab="D:/DAVID/EXPOsOMICS/APP/SensorLab2
   if(output=="load"){
     return(expoapp)
   }
-
 }
 
 
-#' expoapp_print is the function to generate the html with the data analysis of the ExpoApp data.
+#' expoapp_print
+#' 
+#' It is the function to generate the html with the data analysis of the ExpoApp data.
 #' @param result It is a list object with the times, settings, notes, gps_plot, pa_plot, and nolocation.
 #' Times is a data.table with the information of the quality of the data.
 #' Settings are the software details of the phone and settings of the ExpoApp session.
@@ -658,9 +657,10 @@ expoapp_print <- function(result, output_dir = "C:/Users/dagonzalez/Desktop/iMAP
 #' @return value
 #'
 #' @examples
+#' # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants in case they lose the pheno.
 #' # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-#' # It contains a jar file and an example dataset.
-#' # Please, unzip and save it into your desired path.
+#' # It contains a decrypt keep and example datasets.
+#' # Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 #'
 #' browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
