@@ -4,7 +4,13 @@
 \alias{print_expoapp}
 \title{print_expoapp}
 \usage{
-print_expoapp(result, output_dir = NULL, ...)
+print_expoapp(
+  result,
+  output_dir = NULL,
+  open_html = TRUE,
+  save_html = TRUE,
+  ...
+)
 }
 \arguments{
 \item{result}{It is a list object with the times, settings, notes, gps_plot, pa_plot, and nolocation.
@@ -16,6 +22,10 @@ PA_plot is a ggplot object with the METs time-series from ExpoApp.
 Nolocation is the temporal completeness of the geolocation of the Expoapp session.}
 
 \item{output_dir}{The folder where we want to store the html file with the quality analysis of ExpoApp session.}
+
+\item{open_html}{A logical variable (TRUE/FALSE) indicating if we want to open the Quality Analysis Report in the browser.}
+
+\item{save_html}{A logical variable (TRUE/FALSE) indicating if we want to save the Quality Analysis Report.}
 
 \item{...}{optional arguments to the function.}
 }

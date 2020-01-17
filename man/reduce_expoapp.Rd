@@ -9,7 +9,9 @@ reduce_expoapp(
   Time.zone = "Australia/Melbourne",
   output_dir = getwd(),
   save_ExpoApp_totals = TRUE,
-  save_ExpoApp_min = FALSE,
+  save_ExpoApp_min = TRUE,
+  save_html = TRUE,
+  open_html = TRUE,
   ...
 )
 }
@@ -18,11 +20,15 @@ reduce_expoapp(
 
 \item{Time.zone}{The time zone of the study area.}
 
-\item{output_dir}{The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp data.}
+\item{output_dir}{The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp datasets and the Quality Analysis Report.}
 
-\item{save_ExpoApp_totals}{A logical variable (TRUE/FALSE) indicating if we want to save a simplified ExpoApp dataset (10 seconds resolution).}
+\item{save_ExpoApp_totals}{A logical variable (TRUE/FALSE) indicating if we want to save the 10 seconds simplified ExpoApp dataset.}
 
-\item{save_ExpoApp_min}{A logical variable (TRUE/FALSE) indication if we want to save a simplified ExpoApp dataset (1 min resolution).}
+\item{save_ExpoApp_min}{A logical variable (TRUE/FALSE) indicating if we want to save the 1 minute simplified ExpoApp dataset.}
+
+\item{save_html}{A logical variable (TRUE/FALSE) indicating if we want to save the Quality Analysis Report.}
+
+\item{open_html}{A logical variable (TRUE/FALSE) indicating if we want to open the Quality Analysis Report in the browser.}
 
 \item{...}{optional arguments of function.}
 }
@@ -43,6 +49,7 @@ Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 ls()
 result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
-                         save_ExpoApp_min= TRUE)
+                         save_ExpoApp_min = FALSE, save_html = TRUE, open_html = TRUE)
+list.files()
 sapply(result,class)
 }

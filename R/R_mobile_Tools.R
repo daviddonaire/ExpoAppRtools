@@ -114,7 +114,7 @@ decrypt_expoapp_list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...
 #' gps_sf <- sf::st_as_sf(gps_data,coords=c("LONGITUDE","LATITUDE"),crs=4326)
 #' mapview::mapview(gps_sf)
 #'
-#' @export
+
 
 read_gps_expoapp <- function(file=NULL,...){
   EPO <- NULL
@@ -138,7 +138,6 @@ read_gps_expoapp <- function(file=NULL,...){
 #' @param ... optional arguments of function.
 #'
 #' @return value It is a sqlite database with the gps data from ExpoApp cleaned and enriched with information about green spaces.
-#' @export
 
 gis.expo <- function(Build=NULL,Decrypted=NULL,EPSG_code=25832,Buffer=150,Time.zone="Europe/Rome",...){
   setwd(Build)
@@ -159,7 +158,6 @@ gis.expo <- function(Build=NULL,Decrypted=NULL,EPSG_code=25832,Buffer=150,Time.z
 #' @param ... optional arguments of function.
 #'
 #' @return value
-#' @export
 
 mobile.gps <- function(x,...){
   z <- strsplit(x,"/")[[1]]
@@ -211,7 +209,6 @@ mobile.gps <- function(x,...){
 #' @param ... optional arguments of function.
 #'
 #' @return value
-#' @export
 
 mobile.gps.list <- function(processed=NULL,...){
   aux <- lapply(list.files(processed,full.names = TRUE),function(x){print(x);mobile.gps(x)})
@@ -232,7 +229,6 @@ mobile.gps.list <- function(processed=NULL,...){
 #' @return If lista is TRUE, it returns a list of two data.tables. The first is the raw data (3 axes accelerations) and the second is processed (2 vector forces).
 #'If lista is FALSE, it returns a data.table with the 2 vector forces.
 #'
-#' @export
 
 axes2vectors<-function(x=NULL,path,lista=TRUE,Time.zone="Australia/Melbourne",...){
   EPO <- date.time <- date.time2 <- odd <- measure <- g <- dif.time <- mean.x <- NULL
@@ -316,7 +312,6 @@ axes2vectors<-function(x=NULL,path,lista=TRUE,Time.zone="Australia/Melbourne",..
 #' @param ... optional arguments of table function.
 #'
 #' @return value
-#' @export
 
 pa.acti2 <-function(ace,x,plot=FALSE,population="adults",...){
   cont <- axis1.1 <- axis1 <- axis1.2 <- axis1.3 <- axis1.4 <- axis1.5 <- NULL
@@ -431,7 +426,6 @@ pa.acti2 <-function(ace,x,plot=FALSE,population="adults",...){
 #' @param ... optional arguments of table function.
 #'
 #' @return value
-#' @export
 
 completeness_expoapp <- function(aux,...){
   completeness <- Mets <- pro <- NULL
@@ -450,7 +444,6 @@ completeness_expoapp <- function(aux,...){
 #' @param ... optional arguments of table function.
 #'
 #' @return value
-#' @export
 
 time2decimal <- function(date="2019-12-12 08:20:30",...){
   x <- as.POSIXlt(date)
@@ -464,7 +457,6 @@ time2decimal <- function(date="2019-12-12 08:20:30",...){
 #' @param ... optional arguments of table function.
 #'
 #' @return A data.frame with the same shape (nrow*ncols) of the table object.
-#' @export
 
 table2frame <- function(x,...){
   as.data.frame(t(as.matrix(x)))
@@ -626,12 +618,13 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
 #' PA_plot is a ggplot object with the METs time-series from ExpoApp.
 #' Nolocation is the temporal completeness of the geolocation of the Expoapp session.
 #' @param output_dir The folder where we want to store the html file with the quality analysis of ExpoApp session.
+#' @param open_html A logical variable (TRUE/FALSE) indicating if we want to open the Quality Analysis Report in the browser. 
+#' @param save_html A logical variable (TRUE/FALSE) indicating if we want to save the Quality Analysis Report. 
 #' @param ... optional arguments to the function.
 #'
 #' @return value
-#' @export
 
-print_expoapp <- function(result, output_dir = NULL,...){
+print_expoapp <- function(result, output_dir = NULL, open_html = TRUE, save_html = TRUE,...){
   expoapp_text1 <- c("#' ---","#' title: ExpoApp Quality Data Analysis","#' author: David Donaire-Gonzalez","#' date: January 8th, 2019",
                      "#' output:","#'    html_document:","#'      toc: true","#'      highlight: zenburn","#' ---"," ","#' ## Phone & ExpoApp Settings","#'",
                      " ",'#+ results="asis",echo=FALSE, size="tiny" ')
@@ -647,7 +640,10 @@ print_expoapp <- function(result, output_dir = NULL,...){
                      " ",'#rmarkdown::render("C:/ACU/1_Projects/iMAP/Scripts/ExpoApp/Test_Improving_R_mobile_tools.R") ',"#'"," ")
 
   id <- result$settings$characteristics[result$settings$V1 == "ID"]
-  tmp <- file.path(output_dir,paste0("Expoapp_Report_",id,".R"))
+  Rname <- paste0("Expoapp_Report_",id,".R")
+  Hname <- paste0("Expoapp_Report_",id,".html")
+  
+  tmp <- file.path(output_dir,Rname)
   cat(paste0(expoapp_text1,collapse="\n"),file=tmp)
   cat(sapply(apply(result$settings,1,paste0,collapse=": "),function(x)paste("\n#'",x,"  ")),file=tmp,append=T)
   cat(paste0(expoapp_text2,collapse="\n"),file=tmp,append=T)
@@ -660,7 +656,15 @@ print_expoapp <- function(result, output_dir = NULL,...){
   
   rmarkdown::render(tmp,output_dir = output_dir)
   unlink(tmp)
-  browseURL(file.path(output_dir,"expoapp_summary.html"))
+  
+  if(open_html == TRUE){
+    browseURL(file.path(output_dir,Hname))    
+  }
+
+  if(save_html == FALSE){
+    unlink(file.path(output_dir,Hname))
+  }
+
 }
 
 
@@ -669,9 +673,11 @@ print_expoapp <- function(result, output_dir = NULL,...){
 #' It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
 #' @param ExpoApp It is the ExpoApp RData object
 #' @param Time.zone The time zone of the study area.
-#' @param output_dir The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp data.
-#' @param save_ExpoApp_totals A logical variable (TRUE/FALSE) indicating if we want to save a simplified ExpoApp dataset (10 seconds resolution).
-#' @param save_ExpoApp_min A logical variable (TRUE/FALSE) indication if we want to save a simplified ExpoApp dataset (1 min resolution).
+#' @param output_dir The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp datasets and the Quality Analysis Report.
+#' @param save_ExpoApp_totals A logical variable (TRUE/FALSE) indicating if we want to save the 10 seconds simplified ExpoApp dataset.
+#' @param save_ExpoApp_min A logical variable (TRUE/FALSE) indicating if we want to save the 1 minute simplified ExpoApp dataset.
+#' @param save_html A logical variable (TRUE/FALSE) indicating if we want to save the Quality Analysis Report. 
+#' @param open_html A logical variable (TRUE/FALSE) indicating if we want to open the Quality Analysis Report in the browser. 
 #' @param ... optional arguments of function.
 
 #' @return value
@@ -687,13 +693,15 @@ print_expoapp <- function(result, output_dir = NULL,...){
 #' load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 #' ls()
 #' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
-#'                          save_ExpoApp_min= TRUE)
+#'                          save_ExpoApp_min = FALSE, save_html = TRUE, open_html = TRUE)
+#' list.files()
 #' sapply(result,class)
 #' @export
 
 reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
                        output_dir = getwd(), save_ExpoApp_totals = TRUE, 
-                       save_ExpoApp_min = FALSE,...){
+                       save_ExpoApp_min = TRUE, save_html = TRUE,
+                       open_html = TRUE,...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
 
   id <- ExpoApp$settings$characteristics[ExpoApp$settings$V1=='ID']
@@ -739,8 +747,6 @@ reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
   
 
   aux.sf <- aux_min[!is.na(latitude),]
-  #aux.sf[,N:=sum(.N,na.rm=T),by="day"]
-  #aux.sf <- aux.sf[N>1,]
   aux.sf <- st_as_sf(data.frame(aux.sf),coords=c("longitude","latitude"),crs=4326)
   aux.sf <- aux.sf[,c("date","day","acc","pro","sat","Mets")]
 
@@ -772,8 +778,8 @@ reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
     gps_plot = gps_plot,
     notes = copy(ExpoApp$notes))
 
-  print_expoapp(result,output_dir = output_dir)
+  print_expoapp(result,output_dir = output_dir,save_html = save_html)
 
-  return(result)
+  return(expoapp.totals)
 }
 
