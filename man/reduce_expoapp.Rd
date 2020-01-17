@@ -8,6 +8,8 @@ reduce_expoapp(
   ExpoApp = NULL,
   Time.zone = "Australia/Melbourne",
   output_dir = getwd(),
+  save_ExpoApp_totals = TRUE,
+  save_ExpoApp_min = FALSE,
   ...
 )
 }
@@ -18,9 +20,11 @@ reduce_expoapp(
 
 \item{output_dir}{The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp data.}
 
-\item{...}{optional arguments of function.}
+\item{save_ExpoApp_totals}{A logical variable (TRUE/FALSE) indicating if we want to save a simplified ExpoApp dataset (10 seconds resolution).}
 
-\item{acce_lista}{A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.}
+\item{save_ExpoApp_min}{A logical variable (TRUE/FALSE) indication if we want to save a simplified ExpoApp dataset (1 min resolution).}
+
+\item{...}{optional arguments of function.}
 }
 \value{
 value
@@ -38,6 +42,7 @@ browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 ls()
-result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd())
+result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
+                         save_ExpoApp_min= TRUE)
 sapply(result,class)
 }

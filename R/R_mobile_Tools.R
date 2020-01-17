@@ -646,7 +646,8 @@ print_expoapp <- function(result, output_dir = NULL,...){
                      "#https://stackoverflow.com/questions/48370425/pass-code-to-input-of-rmarkdown-render-function-instead-of-a-file ",
                      " ",'#rmarkdown::render("C:/ACU/1_Projects/iMAP/Scripts/ExpoApp/Test_Improving_R_mobile_tools.R") ',"#'"," ")
 
-  tmp <- file.path(output_dir,"expoapp_summary.R")
+  id <- result$settings$characteristics[result$settings$V1 == "ID"]
+  tmp <- file.path(output_dir,paste0("Expoapp_Report_",id,".R"))
   cat(paste0(expoapp_text1,collapse="\n"),file=tmp)
   cat(sapply(apply(result$settings,1,paste0,collapse=": "),function(x)paste("\n#'",x,"  ")),file=tmp,append=T)
   cat(paste0(expoapp_text2,collapse="\n"),file=tmp,append=T)
@@ -654,8 +655,9 @@ print_expoapp <- function(result, output_dir = NULL,...){
   cat(paste0(expoapp_text3,collapse="\n"),file=tmp,append=T)
 
   if(rmarkdown::pandoc_available()==FALSE){
-    installr::install.pandoc("https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi")
+    stop("Error: pandoc 2.7.2 is not installed. Use the following link to installed. \n https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi")
   }
+  
   rmarkdown::render(tmp,output_dir = output_dir)
   unlink(tmp)
   browseURL(file.path(output_dir,"expoapp_summary.html"))
@@ -666,9 +668,10 @@ print_expoapp <- function(result, output_dir = NULL,...){
 #'
 #' It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
 #' @param ExpoApp It is the ExpoApp RData object
-#' @param acce_lista A logical variable (TRUE/FALSE) indicating if the accelerometer output should have raw and vectors or only vectors.
 #' @param Time.zone The time zone of the study area.
 #' @param output_dir The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp data.
+#' @param save_ExpoApp_totals A logical variable (TRUE/FALSE) indicating if we want to save a simplified ExpoApp dataset (10 seconds resolution).
+#' @param save_ExpoApp_min A logical variable (TRUE/FALSE) indication if we want to save a simplified ExpoApp dataset (1 min resolution).
 #' @param ... optional arguments of function.
 
 #' @return value
@@ -683,12 +686,14 @@ print_expoapp <- function(result, output_dir = NULL,...){
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 #' ls()
-#' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd())
+#' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
+#'                          save_ExpoApp_min= TRUE)
 #' sapply(result,class)
 #' @export
 
 reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
-                       output_dir = getwd(),...){
+                       output_dir = getwd(), save_ExpoApp_totals = TRUE, 
+                       save_ExpoApp_min = FALSE,...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
 
   id <- ExpoApp$settings$characteristics[ExpoApp$settings$V1=='ID']
@@ -717,7 +722,10 @@ reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
   aux[,time := time2decimal(date.min)]
 
   expoapp.totals <- aux
-  save(expoapp.totals,file=file.path(output_dir,paste0("ExpoApp_totals_",id,".RData")))
+  if(save_ExpoApp_totals == TRUE){
+    save(expoapp.totals,file=file.path(output_dir,paste0("ExpoApp_totals_",id,".RData")))
+  }
+  
 
   aux_min <- merge(acti_min,gps_min,by="date.min",all.x=T)
   aux_min[,day := factor(substr(date.min,1,10))]
@@ -725,12 +733,16 @@ reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
   aux_min[,time := time2decimal(date.min)]
 
   expoapp.min <- aux_min
-  save(expoapp.min,file=file.path(output_dir,paste0("ExpoApp_min_",id,".RData")))
+  if(save_ExpoApp_min == TRUE){
+    save(expoapp.min,file=file.path(output_dir,paste0("ExpoApp_min_",id,".RData")))
+  }
+  
 
   aux.sf <- aux_min[!is.na(latitude),]
   #aux.sf[,N:=sum(.N,na.rm=T),by="day"]
   #aux.sf <- aux.sf[N>1,]
   aux.sf <- st_as_sf(data.frame(aux.sf),coords=c("longitude","latitude"),crs=4326)
+  aux.sf <- aux.sf[,c("date","day","acc","pro","sat","Mets")]
 
   times <- rbindlist(list(
     Recorded = table2frame(round(table(aux_min$day[!is.na(aux_min$Mets)],useNA="ifany")/60,1)),
