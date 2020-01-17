@@ -699,8 +699,8 @@ print_expoapp <- function(result, output_dir = NULL, open_html = TRUE, save_html
 #' @export
 
 reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
-                       output_dir = getwd(), save_ExpoApp_totals = TRUE, 
-                       save_ExpoApp_min = TRUE, save_html = TRUE,
+                       output_dir = getwd(), save_ExpoApp_totals = FALSE, 
+                       save_ExpoApp_min = FALSE, save_html = TRUE,
                        open_html = TRUE,...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
 
