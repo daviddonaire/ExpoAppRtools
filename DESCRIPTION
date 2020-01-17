@@ -19,6 +19,7 @@ Depends:
   R (>= 3.1.0)
 Imports:
   bit64 (>= 0.9.7),
+  blob (>= 1.2.0),
   fansi (>= 0.4.1),
   rmarkdown (>= 2.0),
   installr (>= 0.22.0),
