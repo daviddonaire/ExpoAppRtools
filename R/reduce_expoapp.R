@@ -16,9 +16,9 @@
 #' @return value
 #'
 #' @examples
-#' # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants in case they lose the pheno.
-#' # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-#' # It contains a decrypt key and example datasets.
+#' # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants
+#' # in case they lose the pheno. Using your password and the below link, you can 
+#' # download SensorLab2-1.2.2 tool. It contains a decrypt key and example datasets.
 #' # Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 #'
 #' browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
