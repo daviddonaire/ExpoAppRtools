@@ -12,7 +12,8 @@ LazyData: true
 RoxygenNote: 7.0.2
 URL: https://github.com/daviddonaire/RExpoApp
 BugReports: https://github.com/daviddonaire/RExpoApp/issues
-SystemRequeriments:  
+SystemRequeriments:
+  Rtools (3.4) <
   java (>= Version 8 Update 231) <https://www.java.com/inc/BrowserRedirect1.jsp?locale=en>,
   pandoc (2.7.2) <https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi>
 Depends:

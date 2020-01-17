@@ -65,7 +65,7 @@ gis.expo <- function(Build=NULL,Decrypted=NULL,EPSG_code=25832,Buffer=150,Time.z
 #
 #@return value
 
-mobile.gps <- function(x,...){
+mobile.gps <- function(x=NULL,...){
   z <- strsplit(x,"/")[[1]]
   z1 <- paste(strsplit(tail(z,1),"[.]")[[1]][1],"RData",sep=".")
   z2 <- paste(c("RData",z1),collapse="/")
@@ -136,7 +136,7 @@ mobile.gps.list <- function(processed=NULL,...){
 #If lista is FALSE, it returns a data.table with the 2 vector forces.
 #
 
-axes2vectors<-function(x=NULL,path,lista=TRUE,Time.zone="Australia/Melbourne",...){
+axes2vectors<-function(x=NULL,path=NULL,lista=TRUE,Time.zone="Australia/Melbourne",...){
   EPO <- date.time <- date.time2 <- odd <- measure <- g <- dif.time <- mean.x <- NULL
   X <- mean.y <- Y <- mean.z <- Z <- dif.x <- dif.y <- dif.z <- p3 <- d <- lx  <- NULL
   ly <- lz <- k <- Av <- Av.s <- date2 <- NULL
@@ -219,7 +219,7 @@ axes2vectors<-function(x=NULL,path,lista=TRUE,Time.zone="Australia/Melbourne",..
 #
 #@return value
 
-pa.acti2 <-function(ace,x,plot=FALSE,population="adults",...){
+pa.acti2 <-function(ace=NULL,x=NULL,plot=FALSE,population="adults",...){
   cont <- axis1.1 <- axis1 <- axis1.2 <- axis1.3 <- axis1.4 <- axis1.5 <- NULL
   axis1._1 <- axis1._2 <- axis1._3 <- axis1._4 <- axis1._5 <- NULL
   cvf5 <- cvf4 <- cvf3 <- cvf2 <- cvf1 <- cvb5 <- CV <- NULL
@@ -333,7 +333,7 @@ pa.acti2 <-function(ace,x,plot=FALSE,population="adults",...){
 #
 #@return value
 
-completeness_expoapp <- function(aux,...){
+completeness_expoapp <- function(aux=NULL,...){
   completeness <- Mets <- pro <- NULL
 
   aux[,completeness := ifelse(is.na(Mets) & is.na(pro), -1,
@@ -364,7 +364,7 @@ time2decimal <- function(date="2019-12-12 08:20:30",...){
 #
 #@return A data.frame with the same shape (nrow*ncols) of the table object.
 
-table2frame <- function(x,...){
+table2frame <- function(x=NULL,...){
   as.data.frame(t(as.matrix(x)))
 }
 
