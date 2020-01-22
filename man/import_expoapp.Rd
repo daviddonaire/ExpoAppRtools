@@ -7,11 +7,6 @@
 import_expoapp(
   file = NULL,
   SensorLab = NULL,
-  Build = NULL,
-  EPSG_code = 25832,
-  Buffer = 150,
-  Time.zone = "Europe/Rome",
-  Clustering = FALSE,
   save_RData = TRUE,
   save_untar = TRUE,
   ...
@@ -21,16 +16,6 @@ import_expoapp(
 \item{file}{Character variable with the path to the tar.gz file of ExpoApp data.}
 
 \item{SensorLab}{Character variable with the path to the SensorLab folder. SensorLab folder has to contain the jar and the pem files.}
-
-\item{Build}{Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.}
-
-\item{EPSG_code}{Numeric variable with the desired projected coordinate reference system of the study area.}
-
-\item{Buffer}{Numeric variable with the desired minimum radius of the buffer to be used in the clustering algorithm.}
-
-\item{Time.zone}{Character variable with the time zone of the study area (e.g. "Australia/Melbourne").}
-
-\item{Clustering}{A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.}
 
 \item{save_RData}{A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.}
 
@@ -54,8 +39,7 @@ Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 targz_file <- file.path(Lab_folder,"ExpoApp.IDddg.tar.gz")
 
 expoapp <- import_expoapp(file = targz_file, SensorLab = Lab_folder,
-                        Time.zone = "Australia/Melbourne", 
-                        Clustering = FALSE, save_RData = FALSE, save_untar=FALSE)
+                        save_RData = FALSE, save_untar=FALSE)
 sapply(expoapp,head)
 
 gps_sf <- sf::st_as_sf(expoapp$gps,coords=c("LONGITUDE","LATITUDE"),crs=4326)

@@ -5,7 +5,11 @@
 #'
 #' It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
 #' @param ExpoApp It is the ExpoApp RData object
-#' @param Time.zone The time zone of the study area.
+# @param Build Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.
+# @param EPSG_code Numeric variable with the desired projected coordinate reference system of the study area.
+# @param Buffer Numeric variable with the desired minimum radius of the buffer to be used in the clustering algorithm.
+#' @param Time.zone Character variable with the time zone of the study area (e.g. "Australia/Melbourne").
+# @param Clustering A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.
 #' @param output_dir The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp datasets and the Quality Analysis Report.
 #' @param save_ExpoApp_totals A logical variable (TRUE/FALSE) indicating if we want to save the 10 seconds simplified ExpoApp dataset.
 #' @param save_ExpoApp_min A logical variable (TRUE/FALSE) indicating if we want to save the 1 minute simplified ExpoApp dataset.
@@ -25,20 +29,30 @@
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 #' load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 #' ls()
-#' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
-#'                          save_ExpoApp_min = FALSE, save_html = TRUE, open_html = TRUE)
+#' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), Time.zone = "Australia/Melbourne",
+#'                          save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
+#'                          open_html = TRUE)
 #' list.files()
 #' sapply(result,class)
 #' @export
 
 reduce_expoapp <- function(ExpoApp = NULL , Time.zone = "Australia/Melbourne",
+#                           Build = NULL, EPSG_code = 25832, Buffer = 150, Clustering = FALSE,                           
                            output_dir = getwd(), save_ExpoApp_totals = FALSE, 
                            save_ExpoApp_min = FALSE, save_html = TRUE,
                            open_html = TRUE,...){
   epo <- acc <- date.min <- axis1 <- V <- steps <- mets <- day <- latitude <- Mets <- NULL
   
   id <- ExpoApp$settings$characteristics[ExpoApp$settings$V1=='ID']
+
+  Clustering = FALSE
   
+#  if(Clustering==TRUE){
+#    gis.expo(Build=Build,Decrypted=a,EPSG_code=EPSG_code ,Buffer=Buffer ,Time.zone=Time.zone)
+#    getwd()
+#    gps <- mobile.gps(list.files(gsub("decrypted","processed",a),full.names=T))
+#  }
+    
   gps <- copy(ExpoApp$gps)
   names(gps) <- tolower(names(gps))
   gps[,date := as.POSIXct(trunc((epo/1e4),0)*10,origin="1970-01-01",tz=Time.zone)]

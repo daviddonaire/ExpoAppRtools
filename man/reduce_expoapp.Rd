@@ -18,7 +18,7 @@ reduce_expoapp(
 \arguments{
 \item{ExpoApp}{It is the ExpoApp RData object}
 
-\item{Time.zone}{The time zone of the study area.}
+\item{Time.zone}{Character variable with the time zone of the study area (e.g. "Australia/Melbourne").}
 
 \item{output_dir}{The folder where we want to store the 10 seconds and 1 minute simplified ExpoApp datasets and the Quality Analysis Report.}
 
@@ -48,8 +48,9 @@ browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
 load(file.path(Lab_folder,"ExpoApp.IDddg.RData"))
 ls()
-result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), save_ExpoApp_totals = TRUE,
-                         save_ExpoApp_min = FALSE, save_html = TRUE, open_html = TRUE)
+result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), Time.zone = "Australia/Melbourne",
+                         save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
+                         open_html = TRUE)
 list.files()
 sapply(result,class)
 }

@@ -3,11 +3,6 @@
 #' This function untars ExpoApp data, decrypts ExpoApp geolocation file, and saves the ExpoApp untared and in RData format.
 #' @param file Character variable with the path to the tar.gz file of ExpoApp data.
 #' @param SensorLab Character variable with the path to the SensorLab folder. SensorLab folder has to contain the jar and the pem files.
-#' @param Build Character variable with the path to the Spatio-Temporal Clustering function. This function reduce the cloud of points around places to a one point per place and time. It also enriches the data with information about OpenStreetMap's green spaces.
-#' @param EPSG_code Numeric variable with the desired projected coordinate reference system of the study area.
-#' @param Buffer Numeric variable with the desired minimum radius of the buffer to be used in the clustering algorithm.
-#' @param Time.zone Character variable with the time zone of the study area (e.g. "Australia/Melbourne").
-#' @param Clustering A logical variable (TRUE/FALSE) indicating if applying yes/no the clustering algorithm.
 #' @param save_RData A logical variable (TRUE/FALSE) indicating if we want to save the RData file of ExpoApp data.
 #' @param save_untar A logical variable (TRUE/FALSE) indicating if we want to save the untar file of ExpoApp data.
 #' @param ... optional arguments to FUN.
@@ -24,8 +19,7 @@
 #' targz_file <- file.path(Lab_folder,"ExpoApp.IDddg.tar.gz")
 #'
 #' expoapp <- import_expoapp(file = targz_file, SensorLab = Lab_folder,
-#'                         Time.zone = "Australia/Melbourne", 
-#'                         Clustering = FALSE, save_RData = FALSE, save_untar=FALSE)
+#'                         save_RData = FALSE, save_untar=FALSE)
 #' sapply(expoapp,head)
 #'
 #' gps_sf <- sf::st_as_sf(expoapp$gps,coords=c("LONGITUDE","LATITUDE"),crs=4326)
@@ -34,12 +28,9 @@
 #' @export
 
 import_expoapp <- function(file = NULL, SensorLab = NULL,
-                           Build = NULL, EPSG_code = 25832, Buffer = 150,
-                           Time.zone = "Europe/Rome", Clustering = FALSE,
                            save_RData= TRUE, save_untar = TRUE,...){
   EPO <- V1 <- NULL
   
-  Clustering = FALSE
   
   if(is.null(file)){
     stop("Error: file is not a Character variable with the path to the tar.gz file of ExpoApp data.")
@@ -76,7 +67,7 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
                        logcat = file.path(td,grep("logcat",dir_expoapp,value=T)))
   
   ## READING ACCELEROMETRY
-  if(length(dir2_expoapp$acce!=0)){
+  if(length(dir2_expoapp$acce)!=0){
     acce <- rbindlist(lapply(dir2_expoapp$acce,fread), use.names = TRUE)
     setkey(acce, EPO)
   }else {acce <- NULL}
@@ -84,21 +75,17 @@ import_expoapp <- function(file = NULL, SensorLab = NULL,
   ## READING & CLEANNING SPATIAL DATA.
   a <- decrypt_expoapp(dir2_expoapp$gps,SensorLab=SensorLab)
   
-  if(Clustering==TRUE){
-    gis.expo(Build=Build,Decrypted=a,EPSG_code=EPSG_code ,Buffer=Buffer ,Time.zone=Time.zone)
-    getwd()
-    gps <- mobile.gps(list.files(gsub("decrypted","processed",a),full.names=T))
-  }else{
+  if(length(dir2_expoapp$gps)!=0){
     gps <- read_gps_expoapp(file=list.files(a,full.names = TRUE))
-  }
+  }else {gps <- NULL}
   
   ## READING BAROMETRIC DATA
-  if(length(dir2_expoapp$bar!=0)){
+  if(length(dir2_expoapp$bar)!=0){
     bar <- read.csv(dir2_expoapp$bar)
   }else {bar <- NULL}
   
   ## READING UI DATA
-  if(length(dir2_expoapp$ui!=0)){
+  if(length(dir2_expoapp$ui)!=0){
     ui <- read.csv(dir2_expoapp$ui)
   }else {ui<- NULL}
   
