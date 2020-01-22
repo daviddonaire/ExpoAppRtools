@@ -41,7 +41,7 @@ It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data
 \examples{
 # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants
 # in case they lose the pheno. Using your password and the below link, you can 
-# download SensorLab2-1.2.2 tool. It contains a decrypt key and example datasets.
+# download SensorLab2-1.2.2 tool. It contains a jar file, a decrypt key and example datasets.
 # Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 
 browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
@@ -51,6 +51,14 @@ ls()
 result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), Time.zone = "Australia/Melbourne",
                          save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
                          open_html = TRUE)
-list.files()
-sapply(result,class)
+
+# If you have imported Expoapp Data using import_expoapp and you are in the same sesion, you don't need to load the data.
+sapply(expoapp,head)
+result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), Time.zone = "Australia/Melbourne",
+                         save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
+                         open_html = TRUE)
+result
+gps <- result[!is.na(latitude),]
+gps_sf <- sf::st_as_sf(gps,coords=c("longitude","latitude"),crs=4326)
+mapview::mapview(gps_sf,zcol="mets",layer.name="METs")
 }

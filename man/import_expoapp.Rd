@@ -24,15 +24,22 @@ import_expoapp(
 \item{...}{optional arguments to FUN.}
 }
 \value{
-value
+It returns a object class list with 6 elements (acce, gps, bar, ui, settings, notes). Each element is a data.table object.
+Acce object contains data from smartphone accelerometry measures. Gps object contains decrypted data from smarphone location measures.
+Bar object contaisn data from smartphone barometric pressure measures. Ui object contains information about user interaction with smartphone (screen turn on/off).
+Settings object contains information about smartphone (e.g. brand and android version) and ExpoApp session (i.e. id and monitors sampling rates).
+Notes object contains turn off, charging, low battery events during expoapp monitoring.      
+
+If save_RData and save_untar are TRUE a RData file and folder with this informacion is saved in the same folder as the original file.
 }
 \description{
 This function untars ExpoApp data, decrypts ExpoApp geolocation file, and saves the ExpoApp untared and in RData format.
 }
 \examples{
-# Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-# It contains a jar file and an example dataset.
-# Please, unzip and save it into your desired path.
+# ExpoApp geolocation information is encrypted to ensure the confidentiality of participants
+# in case they lose the pheno. Using your password and the below link, you can 
+# download SensorLab2-1.2.2 tool. It contains a jar file, a decrypt key and example datasets.
+# Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 
 browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
@@ -44,5 +51,5 @@ sapply(expoapp,head)
 
 gps_sf <- sf::st_as_sf(expoapp$gps,coords=c("LONGITUDE","LATITUDE"),crs=4326)
 mapview::mapview(gps_sf)
-# see Expoapp_resum to generate the 10 seconds and 1 minute simplified Expoapp files.
+# see reduce_expoapp to generate the 10 seconds and 1 minute simplified Expoapp files.
 }
