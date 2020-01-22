@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_expoapp.R
 \name{print_expoapp}
 \alias{print_expoapp}
-\title{print_expoapp}
+\title{Generate ExpoApp Quality Data Analysis Report in html}
 \usage{
 print_expoapp(
   result,

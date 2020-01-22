@@ -1,4 +1,4 @@
-#' print_expoapp
+#' Generate ExpoApp Quality Data Analysis Report in html
 #' 
 #' It is the function to generate the html with the data analysis of the ExpoApp data.
 #' @param result It is a list object with the times, settings, notes, gps_plot, pa_plot, and nolocation.
