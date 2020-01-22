@@ -33,7 +33,11 @@ reduce_expoapp(
 \item{...}{optional arguments of function.}
 }
 \value{
-value
+It returns a data.table object with the time, accelerometry and location information at 10 seconds resolution. 
+This simplified ExpoApp dataset is still preliminar. So far, it is usefull only for the Quality Analysis Report. 
+
+If save_ExpoApp_totals, save_ExpoApp_min and save_html are TRUE a 10 seconds RData, 1 minute RData and quality report html files are
+saved at output_dir folder.
 }
 \description{
 It is the function to generate a 10 seconds and 1 minute simplified ExpoApp data.
