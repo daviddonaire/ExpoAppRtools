@@ -18,7 +18,7 @@
 #' @param ... optional arguments of function.
 
 #' @return It returns a data.table object with the time, accelerometry and location information at 10 seconds resolution. 
-#' This simplified ExpoApp dataset is still preliminar. So far, it is usefull only for the Quality Analysis Report. 
+#' This simplified ExpoApp dataset is still preliminar. So far, it is useful only for the Quality Analysis Report. 
 #' 
 #' If save_ExpoApp_totals, save_ExpoApp_min and save_html are TRUE a 10 seconds RData, 1 minute RData and quality report html files are
 #' saved at output_dir folder.
@@ -37,7 +37,8 @@
 #'                          save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
 #'                          open_html = TRUE)
 #' 
-#' # If you have imported Expoapp Data using import_expoapp and you are in the same sesion, you don't need to load the data.
+#' # If you have imported Expoapp Data using import_expoapp and you are in the same sesion, 
+#' you don't need to load the data.
 #' sapply(expoapp,head)
 #' result <- reduce_expoapp(ExpoApp=expoapp,output_dir=getwd(), Time.zone = "Australia/Melbourne",
 #'                          save_ExpoApp_totals = TRUE, save_ExpoApp_min = FALSE, save_html = TRUE, 
