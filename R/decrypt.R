@@ -14,7 +14,6 @@
 #' @import bit64
 #' @import fansi
 #' @import rmarkdown
-#' @import installr
 #' @import knitr
 #' @import sf
 #' @import ggplot2
