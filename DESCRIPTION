@@ -23,7 +23,6 @@ Imports:
   blob (>= 1.2.0),
   fansi (>= 0.4.1),
   rmarkdown (>= 2.0),
-  installr (>= 0.22.0),
   knitr (>= 1.26),
   sf (>= 0.8.0),
   ggplot2 (>= 3.2.1),
