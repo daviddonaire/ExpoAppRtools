@@ -17,7 +17,7 @@ SystemRequeriments:
   pandoc (2.7.2) <https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi>, or
   Rstudio (1.2.5033)
 Depends:
-  R (>= 3.6.2)
+  R (>= 3.6.0)
 Imports:
   bit64 (>= 0.9.7),
   blob (>= 1.2.0),
