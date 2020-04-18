@@ -5,11 +5,7 @@ Version: 0.1.0
 Date: 2020-01-08
 Author: David Donaire-Gonzalez 
 Maintainer: David Donaire-Gonzalez <dedonaire@gmail.com>
-<<<<<<< HEAD
-Description: RExpoApp - Untar, Decrypt, Import,Score, Simplify, Combine and Evaluate ExpoApp records.
-=======
 Description: RExpoApp - Untar, Decrypt, Import, Score, Simplify, Combine, and Evaluate ExpoApp records.
->>>>>>> 9408f3549f553a7f208081483348ea3117ad1351
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
