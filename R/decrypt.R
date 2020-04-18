@@ -8,13 +8,12 @@
 #' @param SensorLab The path to the SensorLab folder with the jar file.
 #' @param ... optional arguments of function.
 #'
-#' @return value
+#' @return The function returns the path to where decrypted file is stored. This function saves a decrypted file of the ExpoApp gps data.
 #'
 #'
 #' @import bit64
 #' @import fansi
 #' @import rmarkdown
-#' @import installr
 #' @import knitr
 #' @import sf
 #' @import ggplot2
@@ -30,14 +29,17 @@
 
 #'
 #' @examples
-#' # Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-#' # It contains a jar file and an example dataset.
-#' # Please, unzip and save in your desired path
+#' # ExpoApp geolocation information is encrypted to ensure the confidentiality of participants
+#' # in case they lose the pheno. Using your password and the below link, you can 
+#' # download SensorLab2-1.2.2 tool. It contains a jar file, a decrypt key and example datasets.
+#' # Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 #'
 #' browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 #' Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
-#' gps_file <- system.file("extdata", "ExpoApp.GPS.IDddg.csv", package = "ExpoAppRtools")
-#' decrypt_expoapp(file = gps_file, SensorLab = Lab_folder)
+#' encryted_file <- file.path(Lab_folder,"ExpoApp.GPS.IDddg.csv")
+#' output_dir <-"C:/Users/ddonaire/Documents"
+#' 
+#' decrypt_expoapp(file = encrypted_file, SensorLab = Lab_folder, output_dir=output_dir)
 #'
 #' @export
 
@@ -81,7 +83,9 @@ decrypt_expoapp <- function(file=NULL, output_dir=NULL,SensorLab=SensorLab,...){
 #' @param SensorLab The path to the SensorLab folder with the jar file.
 #' @param ... optional arguments of function.
 #'
-#' @return value
+#' @return The function returns the path to where the decrypted files are stored. 
+#' This function decrypts all ExpoApp gps files stored in one folder and saves the decrypted file at the output_dir.
+#' 
 #' @export
 
 decrypt_expoapp_list <- function(gps_dir=NULL,output_dir=NULL,SensorLab=NULL,...){

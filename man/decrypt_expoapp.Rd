@@ -16,19 +16,22 @@ decrypt_expoapp(file = NULL, output_dir = NULL, SensorLab = SensorLab, ...)
 \item{...}{optional arguments of function.}
 }
 \value{
-value
+The function returns the path to where decrypted file is stored. This function saves a decrypted file of the ExpoApp gps data.
 }
 \description{
 It is a function to decode the geolocation file of ExpoApp.
 }
 \examples{
-# Using your password and the below link, you can download SensorLab2-1.2.2 tool.
-# It contains a jar file and an example dataset.
-# Please, unzip and save in your desired path
+# ExpoApp geolocation information is encrypted to ensure the confidentiality of participants
+# in case they lose the pheno. Using your password and the below link, you can 
+# download SensorLab2-1.2.2 tool. It contains a jar file, a decrypt key and example datasets.
+# Please, download, unzip and save SensorLab2-1.2.2 into your desired path.
 
 browseURL("https://cloudstor.aarnet.edu.au/plus/s/5kPnaEyzuRB4cpH")
 Lab_folder <-"C:/Users/ddonaire/Documents/SensorLab2-1.2.2"
-gps_file <- system.file("extdata", "ExpoApp.GPS.IDddg.csv", package = "ExpoAppRtools")
-decrypt_expoapp(file = gps_file, SensorLab = Lab_folder)
+encryted_file <- file.path(Lab_folder,"ExpoApp.GPS.IDddg.csv")
+output_dir <-"C:/Users/ddonaire/Documents"
+
+decrypt_expoapp(file = encrypted_file, SensorLab = Lab_folder, output_dir=output_dir)
 
 }

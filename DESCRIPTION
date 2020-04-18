@@ -1,11 +1,11 @@
 Package: RExpoApp
 Type: Package
-Title: RExpoApp - Untar, Decrypt, Import, Quality Analysis, and Post-process ExpoApp records
+Title: RExpoApp - Untar, Decrypt, Import, Score, Simplify, Combine and Evaluate ExpoApp records
 Version: 0.1.0
 Date: 2020-01-08
 Author: David Donaire-Gonzalez 
 Maintainer: David Donaire-Gonzalez <dedonaire@gmail.com>
-Description: RExpoApp - Untar, Decrypt, Import, quality analysis, and post-process ExpoApp data.
+Description: RExpoApp - Untar, Decrypt, Import,Score, Simplify, Combine and Evaluate ExpoApp records.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -13,17 +13,16 @@ RoxygenNote: 7.0.2
 URL: https://github.com/daviddonaire/RExpoApp
 BugReports: https://github.com/daviddonaire/RExpoApp/issues
 SystemRequeriments:
-  Rtools (3.5) <https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe>
   java (>= Version 8 Update 231) <https://www.java.com/inc/BrowserRedirect1.jsp?locale=en>,
-  pandoc (2.7.2) <https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi>
+  pandoc (2.7.2) <https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-windows-x86_64.msi>, or
+  Rstudio (1.2.5033)
 Depends:
-  R (>= 3.6.2)
+  R (>= 3.6.0)
 Imports:
   bit64 (>= 0.9.7),
   blob (>= 1.2.0),
   fansi (>= 0.4.1),
   rmarkdown (>= 2.0),
-  installr (>= 0.22.0),
   knitr (>= 1.26),
   sf (>= 0.8.0),
   ggplot2 (>= 3.2.1),

@@ -16,7 +16,8 @@ decrypt_expoapp_list(gps_dir = NULL, output_dir = NULL, SensorLab = NULL, ...)
 \item{...}{optional arguments of function.}
 }
 \value{
-value
+The function returns the path to where the decrypted files are stored. 
+This function decrypts all ExpoApp gps files stored in one folder and saves the decrypted file at the output_dir.
 }
 \description{
 It is a function to decrypt at once all ExpoApp gps files stored into the same folder.
